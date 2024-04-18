@@ -10,13 +10,16 @@ import java.time.LocalDateTime
 class ArkanoidServiceImpl(
     val scoreRepository: ScoreRepository
 ) : ArkanoidService {
+    companion object {
+        val SCORE_TOP_LIMIT = 5
+    }
+
     override fun saveScore(user: String, score: Long) {
         val item = ScoreItem(user, score, LocalDateTime.now())
         scoreRepository.save(item)
     }
 
     override fun getScoreBoard(): List<ScoreItem> {
-        // todo
-        return emptyList()
+        return scoreRepository.getTopByScore(SCORE_TOP_LIMIT)
     }
 }
