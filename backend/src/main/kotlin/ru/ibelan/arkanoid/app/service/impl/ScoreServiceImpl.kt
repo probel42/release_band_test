@@ -3,13 +3,13 @@ package ru.ibelan.arkanoid.app.service.impl
 import org.springframework.stereotype.Service
 import ru.ibelan.arkanoid.app.model.ScoreItem
 import ru.ibelan.arkanoid.app.repository.ScoreRepository
-import ru.ibelan.arkanoid.app.service.ArkanoidService
+import ru.ibelan.arkanoid.app.service.ScoreService
 import java.time.LocalDateTime
 
 @Service
-class ArkanoidServiceImpl(
+class ScoreServiceImpl(
     val scoreRepository: ScoreRepository
-) : ArkanoidService {
+) : ScoreService {
     companion object {
         val SCORE_TOP_LIMIT = 5
     }
