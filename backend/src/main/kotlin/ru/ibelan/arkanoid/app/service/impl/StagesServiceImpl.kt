@@ -5,10 +5,10 @@ import com.fasterxml.jackson.databind.ObjectMapper
 import org.springframework.core.io.ClassPathResource
 import org.springframework.stereotype.Service
 import ru.ibelan.arkanoid.app.dto.Stage
-import ru.ibelan.arkanoid.app.service.StagessService
+import ru.ibelan.arkanoid.app.service.StagesService
 
 @Service
-class StagessServiceImpl : StagessService {
+class StagesServiceImpl : StagesService {
     companion object {
         private const val STAGES_INFO_PATH = "stages/stages.json"
         private const val BASE_SPEED: Int = 10
