@@ -1,6 +1,6 @@
 package ru.ibelan.arkanoid.app.dto
 
-data class Level(
+data class Stage(
     val targets: String,
     val speed: Double
 )
