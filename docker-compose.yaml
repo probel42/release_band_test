@@ -1,0 +1,71 @@
+volumes:
+  mongo_volume:
+  backend_build_volume:
+  # frontend_build_volume:
+
+services:
+  backend_build:
+    build:
+      context: backend/
+      dockerfile: backend_builder.docker
+    volumes:
+      - backend_build_volume:/usr/app/backend/build/libs/
+    depends_on:
+      - mongo
+    networks:
+      - default_network
+
+  # frontend_build:
+  #   build: frontend/
+  #   volumes:
+  #     - frontend_build_volume:/usr/app/frontend/public/
+  #   environment:
+  #     - SERVER_URI=http://localhost:${SERVER_PORT}/backend
+  #   networks:
+  #     - default_network
+
+  backend:
+    image: tomcat:10.1-jdk17
+    volumes:
+      - backend_build_volume:/usr/local/tomcat/webapps
+    environment:
+      - MONGO_DB_HOST=mongo
+      - MONGO_DB_PORT=27017
+      - MONGO_DB_NAME=arkanoid
+      - MONGO_DB_USERNAME=arkanoid_app
+      - MONGO_DB_PASSWORD=arkanoid_app
+    depends_on:
+      - mongo
+      - backend_build
+    ports:
+      - ${SERVER_PORT}:8080
+    networks:
+      - default_network
+
+  # frontend:
+  #   image: nginx:${NGINX_VERSION}
+  #   volumes:
+  #     - frontend_build_volume:/usr/share/nginx/html/
+  #   depends_on:
+  #     - frontend_build
+  #     - backend
+  #   ports:
+  #     - ${CLIENT_PORT}:80
+  #   networks:
+  #     - default_network
+
+  mongo:
+    image: mongo:latest
+    volumes:
+      - mongo_volume:/data/db
+      - ./init-mongo.js:/docker-entrypoint-initdb.d/mongo-init.js:ro
+    environment:
+      - MONGO_INITDB_DATABASE=arkanoid
+      - MONGO_INITDB_ROOT_USERNAME=arkanoid_app
+      - MONGO_INITDB_ROOT_PASSWORD=arkanoid_app
+    networks:
+      - default_network
+
+networks:
+  default_network:
+    name: network
